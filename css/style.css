@@ -1,0 +1,14 @@
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none !important;
+}
+
+ul {
+    list-style-type: none;
+}
+h2 {
+    text-transform: uppercase;
+}
