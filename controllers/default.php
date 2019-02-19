@@ -1,5 +1,11 @@
 <?php
-$date = date('Y-m-d');
+
+$date = $http->get('date');
+if($date == null){
+    $link = $http->getLink(array('date' => date('Y-m-d')));
+    $http->redirect($link);
+}
+
 echo $date;
 
 $categories = $db->getData('SELECT * FROM dish_types');
