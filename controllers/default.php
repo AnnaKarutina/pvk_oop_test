@@ -6,15 +6,20 @@ if($date == null){
     $http->redirect($link);
 }
 
-echo $date.'<br>';
+
+$contentTmpl->set('today', $date);
+$link = $http->getLink(array('date' => $date));
+$contentTmpl->set('link_today', $link);
 
 $dayBefore = date('Y-m-d', strtotime("-1 day"));
 
-echo $dayBefore.'<br>';
+$contentTmpl->set('yesterday', $dayBefore);
+$link = $http->getLink(array('date' => $dayBefore));
+$contentTmpl->set('link_yesterday', $link);
 
 $dayAfter = date('Y-m-d', strtotime("+1 day"));
 
-echo $dayAfter.'<br>';
+$contentTmpl->set('tomorrow', $dayAfter);
 
 $categories = $db->getData('SELECT * FROM dish_types');
 
