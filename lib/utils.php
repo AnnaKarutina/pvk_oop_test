@@ -15,4 +15,8 @@ function fixDb($val)
     */
     return '"'.addSlashes($val).'"';
 }
+
+function discount($price, $discountProcent){
+    return round($price * ((100 - $discountProcent) / 100), 2);
+}
 ?>

@@ -1,11 +1,30 @@
 <?php
 require_once 'conf.php';
+
+
 // loome vajalikud vaade objektid
 $mainTmpl = new Template('main');
 $contentTmpl = new Template('content');
+/*
+$categories = array();
 
+$dishTypes = $db->getData('SELECT * FROM dish_types');
 
+foreach ($dishTypes as $dishType){
+    $sql = 'SELECT * FROM dishes WHERE type_id='.fixDb($dishType['type_id']);
+    $menu =  $db->getData($sql);
+    $categories[] = array(
+        'name' => $dishType['type_name'],
+        'icon' => $dishType['type_icon'],
+        'data' => $menu
+    );
+}
 
+echo '<pre>';
+print_r($categories);
+echo '</pre>';
+*/
+/*
 $categories = array(
     array(
         'name' => 'praed',
@@ -38,23 +57,32 @@ $categories = array(
         )
     )
 );
-
+*/
 $mainTmpl->set('title', 'Menu App');
+
+$categories = $db->getData('SELECT * FROM dish_types');
 
 foreach ($categories as $category){
     $cardTmpl = new Template('card');
     $cardHeaderTmpl = new Template('header');
     $cardDataTmpl = new Template('data');
 
-    $cardHeaderTmpl->set('category', $category['name']);
-    $cardHeaderTmpl->set('icon', $category['icon']);
+    $cardHeaderTmpl->set('category', $category['type_name']);
+    $cardHeaderTmpl->set('icon', $category['type_icon']);
     $cardTmpl->set('card_header', $cardHeaderTmpl->parse());
 
-    $cardDataTmpl->set('category', $category['name']);
+    $cardDataTmpl->set('category', $category['type_name']);
+    $category['data'] = $db->getData('SELECT * FROM dishes WHERE type_id='.fixDb($category['type_id']));
     $listTmpl = new Template('list');
     foreach ($category['data'] as $dish){
         foreach ($dish as $name=>$value){
             $listTmpl->set($name, $value);
+            $discount = discount($dish['dish_price'], 15);
+        }
+        if($category['type_name'] != 'joogid') {
+            $listTmpl->set('discount', $discount);
+        } else {
+            $listTmpl->set('discount', $dish['dish_price']);
         }
         $cardDataTmpl->add('dish_list', $listTmpl->parse());
     }
