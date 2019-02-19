@@ -6,7 +6,15 @@ if($date == null){
     $http->redirect($link);
 }
 
-echo $date;
+echo $date.'<br>';
+
+$dayBefore = date('Y-m-d', strtotime("-1 day"));
+
+echo $dayBefore.'<br>';
+
+$dayAfter = date('Y-m-d', strtotime("+1 day"));
+
+echo $dayAfter.'<br>';
 
 $categories = $db->getData('SELECT * FROM dish_types');
 
